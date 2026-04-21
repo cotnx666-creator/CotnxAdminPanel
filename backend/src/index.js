@@ -41,6 +41,14 @@ initDb();
 app.get('/', (req, res) => {
   res.json({ success: true, message: 'Admin Panel API is running...' });
 });
+app.get('/api', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Admin Panel API is running...'
+  });
+});
+
+app.use('/api/auth', authRoutes);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
