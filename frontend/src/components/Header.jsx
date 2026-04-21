@@ -1,11 +1,13 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ChevronLeft, Plus, Bell, Search } from 'lucide-react';
+import { ChevronLeft, Sun, Moon, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
 
   const getPageTitle = () => {
     const path = location.pathname;
@@ -23,7 +25,7 @@ const Header = () => {
           {showBackButton && (
             <button 
               onClick={() => navigate(-1)}
-              className="p-2 hover:bg-gray-100 rounded-full md:hidden dark:hover:bg-gray-800"
+              className="p-2 hover:bg-gray-100 rounded-full md:hidden dark:hover:bg-gray-800 dark:text-gray-400"
             >
               <ChevronLeft size={24} />
             </button>
@@ -34,15 +36,36 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <button className="p-2 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800">
-            <Search size={20} className="text-gray-600 dark:text-gray-400" />
+          <button 
+            onClick={toggleTheme}
+            className="p-2 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800 transition-colors"
+            title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            {isDark ? (
+              <Sun size={20} className="text-gray-600 dark:text-yellow-400" />
+            ) : (
+              <Moon size={20} className="text-gray-600" />
+            )}
           </button>
-          <button className="p-2 hover:bg-gray-100 rounded-full relative dark:hover:bg-gray-800">
-            <Bell size={20} className="text-gray-600 dark:text-gray-400" />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-gray-900"></span>
-          </button>
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs">
-            {user?.name?.[0] || 'A'}
+          
+          <div className="h-8 w-[1px] bg-gray-200 dark:bg-gray-700 mx-1 hidden md:block"></div>
+
+          <div className="flex items-center gap-2 md:ml-2">
+            <div className="hidden sm:block text-right">
+              <div className="text-xs font-bold text-gray-900 dark:text-white truncate max-w-[100px]">
+                {user?.name}
+              </div>
+              <div className="text-[10px] text-gray-500 dark:text-gray-400">
+                {user?.role}
+              </div>
+            </div>
+            <button 
+              onClick={logout}
+              className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors md:hidden"
+              title="Logout"
+            >
+              <LogOut size={20} />
+            </button>
           </div>
         </div>
       </div>

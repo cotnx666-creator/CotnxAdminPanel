@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -9,30 +8,21 @@ import {
   Settings,
   LogOut,
   ChevronRight,
-  Sun,
-  Moon,
   Boxes,
   FolderTree,
   Wallet,
   Receipt,
   PieChart,
-  UsersRound
+  UsersRound,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Sidebar = () => {
   const { logout, user } = useAuth();
-  const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark');
-
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDark]);
+  const { isDark, toggleTheme } = useTheme();
 
   const isAdmin = user?.role === 'Admin';
 
@@ -64,9 +54,9 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 h-screen bg-white border-r border-gray-200 flex flex-col fixed left-0 top-0">
-      <div className="p-6 border-b border-gray-200">
-        <h1 className="text-2xl font-bold text-primary flex items-center gap-2">
+    <div className="w-64 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col fixed left-0 top-0 transition-colors">
+      <div className="p-6 border-b border-gray-200 dark:border-gray-800">
+        <h1 className="text-2xl font-bold text-primary dark:text-blue-500 flex items-center gap-2">
           AdminPanel
         </h1>
       </div>
@@ -79,8 +69,8 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center justify-between px-6 py-3 text-sm font-medium transition-colors ${
                 isActive 
-                  ? 'bg-blue-50 text-blue-600 border-r-4 border-blue-600' 
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-r-4 border-blue-600' 
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
               }`
             }
           >
@@ -95,7 +85,7 @@ const Sidebar = () => {
         {isAdmin && (
           <>
             <div className="px-6 py-3 pt-6">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Finance</span>
+              <span className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Finance</span>
             </div>
             {financeItems.map((item) => (
               <NavLink
@@ -104,8 +94,8 @@ const Sidebar = () => {
                 className={({ isActive }) =>
                   `flex items-center justify-between px-6 py-3 text-sm font-medium transition-colors ${
                     isActive 
-                      ? 'bg-blue-50 text-blue-600 border-r-4 border-blue-600' 
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-r-4 border-blue-600' 
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
                   }`
                 }
               >
@@ -119,17 +109,17 @@ const Sidebar = () => {
         )}
       </nav>
 
-      <div className="p-4 border-t border-gray-200 space-y-2">
+      <div className="p-4 border-t border-gray-200 dark:border-gray-800 space-y-2">
         <button
-          onClick={() => setIsDark(!isDark)}
-          className="flex items-center gap-3 w-full px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+          onClick={toggleTheme}
+          className="flex items-center gap-3 w-full px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
         >
-          {isDark ? <Sun size={20} /> : <Moon size={20} />}
+          {isDark ? <Sun size={20} className="text-yellow-400" /> : <Moon size={20} />}
           {isDark ? 'Light Mode' : 'Dark Mode'}
         </button>
         <button
           onClick={logout}
-          className="flex items-center gap-3 w-full px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          className="flex items-center gap-3 w-full px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
         >
           <LogOut size={20} />
           Logout
