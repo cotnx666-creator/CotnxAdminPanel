@@ -13,7 +13,7 @@ const BottomNav = () => {
     { name: 'Orders', icon: <ShoppingCart size={24} />, path: '/orders' },
     { name: 'Products', icon: <Package size={24} />, path: '/products' },
     { name: 'Customers', icon: <Users size={24} />, path: '/customers' },
-    { name: 'More', icon: <MoreHorizontal size={24} />, path: '/settings' },
+    { name: 'More', icon: <MoreHorizontal size={24} />, path: '/menu' },
   ];
 
   return (

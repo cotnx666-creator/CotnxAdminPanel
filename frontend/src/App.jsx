@@ -18,6 +18,7 @@ const Orders = lazy(() => import('./pages/Orders'));
 const Customers = lazy(() => import('./pages/Customers'));
 const Reports = lazy(() => import('./pages/Reports'));
 const Settings = lazy(() => import('./pages/Settings'));
+const Menu = lazy(() => import('./pages/Menu'));
 
 // Finance Module
 const FinanceDashboard = lazy(() => import('./pages/FinanceDashboard'));
@@ -71,8 +72,9 @@ function App() {
                 <Route path="inventory" element={<Inventory />} />
                 <Route path="orders" element={<Orders />} />
                 <Route path="customers" element={<Customers />} />
-                <Route 
-                  path="reports" 
+              <Route path="menu" element={<Menu />} />
+              <Route 
+                path="reports" 
                   element={
                     <ProtectedRoute adminOnly>
                       <Reports />
