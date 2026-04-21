@@ -10,7 +10,6 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: light dark;
   background-color: #f8fafc;
 }
 
@@ -76,4 +75,14 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+input, textarea, select {
+  color: #111 !important;
+  background-color: #fff !important;
+}
+:root.dark input,
+:root.dark textarea,
+:root.dark select {
+  color: #f8fafc !important;
+  background-color: #1e293b !important;
 }
