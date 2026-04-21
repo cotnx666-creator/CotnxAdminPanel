@@ -136,52 +136,65 @@ const Orders = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Orders</h2>
-          <p className="text-gray-500">Manage customer orders and billing.</p>
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Orders</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Manage customer orders and billing.</p>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-sm active:scale-95"
         >
           <Plus size={20} />
-          Create Manual Order
+          <span>Create Manual Order</span>
         </button>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      {/* Search and Filters for Orders */}
+      <div className="flex flex-col md:flex-row gap-4 items-center bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
+        <div className="relative flex-1 w-full">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+          <input
+            type="text"
+            placeholder="Search by Order ID or Customer..."
+            className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none dark:text-white text-sm"
+          />
+        </div>
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
         <table className="w-full text-left">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-800">
             <tr>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600">Order ID</th>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600">Customer</th>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600">Date</th>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600">Amount</th>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600">Status</th>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600 text-right">Actions</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Order ID</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Customer</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Date</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Amount</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Status</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
             {loading ? (
               <tr><td colSpan="6" className="text-center py-8"><Loader2 className="animate-spin mx-auto text-blue-600" /></td></tr>
             ) : orders.map((order) => (
-              <tr key={order.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-6 py-4 text-sm font-medium">#{order.id}</td>
+              <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                <td className="px-6 py-4 text-sm font-medium dark:text-white">#{order.id}</td>
                 <td className="px-6 py-4">
-                  <div className="text-sm font-medium text-gray-900">{order.customer_name}</div>
-                  <div className="text-xs text-gray-500">{order.customer_phone}</div>
+                  <div className="text-sm font-medium text-gray-900 dark:text-white">{order.customer_name}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">{order.customer_phone}</div>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-600">
+                <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
                   {new Date(order.created_at).toLocaleDateString()}
                 </td>
-                <td className="px-6 py-4 text-sm font-bold text-gray-900">${order.total_amount}</td>
+                <td className="px-6 py-4 text-sm font-bold text-gray-900 dark:text-white">${order.total_amount}</td>
                 <td className="px-6 py-4">
                   <select 
                     value={order.status}
                     onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
-                    className="text-sm border-none bg-transparent font-medium focus:ring-0 cursor-pointer"
+                    className="text-sm border-none bg-transparent font-medium focus:ring-0 cursor-pointer dark:text-white"
                   >
                     <option value="Pending">Pending</option>
                     <option value="Shipped">Shipped</option>
@@ -204,6 +217,52 @@ const Orders = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden grid grid-cols-1 gap-4">
+        {loading ? (
+          <div className="flex justify-center py-8"><Loader2 className="animate-spin text-blue-600" /></div>
+        ) : orders.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">No orders found.</div>
+        ) : orders.map((order) => (
+          <div key={order.id} className="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-4">
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-gray-900 dark:text-white">#{order.id}</span>
+                <span className="text-xs text-gray-400">{new Date(order.created_at).toLocaleDateString()}</span>
+              </div>
+              <span className="text-lg font-bold text-blue-600 dark:text-blue-400">${order.total_amount}</span>
+            </div>
+            
+            <div className="space-y-1">
+              <div className="text-sm font-medium text-gray-900 dark:text-white">{order.customer_name}</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">{order.customer_phone}</div>
+            </div>
+
+            <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800">
+              <div className="flex items-center gap-2">
+                {getStatusIcon(order.status)}
+                <select 
+                  value={order.status}
+                  onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
+                  className="text-xs bg-gray-50 dark:bg-gray-800 border-none rounded-md py-1 px-2 font-medium focus:ring-0 cursor-pointer dark:text-white"
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Delivered">Delivered</option>
+                  {isAdmin && <option value="Cancelled">Cancelled</option>}
+                </select>
+              </div>
+              <button 
+                onClick={() => handleDownloadInvoice(order.id)}
+                className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+              >
+                <Download size={18} />
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* New Order Modal */}

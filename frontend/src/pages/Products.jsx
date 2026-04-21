@@ -181,68 +181,72 @@ const Products = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Products</h2>
-          <p className="text-gray-500">Manage your inventory and product listings.</p>
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Products</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Manage your inventory and product listings.</p>
         </div>
         {isAdmin && (
           <button 
             onClick={() => { resetForm(); setIsModalOpen(true); }}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-sm active:scale-95"
           >
             <Plus size={20} />
-            Add Product
+            <span>Add Product</span>
           </button>
         )}
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+      <div className="flex flex-col md:flex-row gap-4 items-center bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="relative flex-1 w-full">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           <input
             type="text"
-            placeholder="Search by name or SKU..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            placeholder="Search products..."
+            className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none dark:text-white text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="flex gap-4 w-full md:w-auto">
+        <div className="flex gap-2 w-full md:w-auto">
           <select 
-            className="px-4 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 md:flex-none px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 dark:text-white text-sm"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">All Categories</option>
             {categories.map(cat => <option key={cat.id} value={cat.name}>{cat.name}</option>)}
           </select>
+          <button className="p-2 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+            <Filter size={20} className="text-gray-600 dark:text-gray-400" />
+          </button>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
         <table className="w-full text-left">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-800">
             <tr>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600">Product</th>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600">Category</th>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600">Price</th>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600">Stock</th>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600">SKU</th>
-              <th className="px-6 py-4 text-sm font-semibold text-gray-600 text-right">Actions</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Product</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Category</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Price</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400">Stock</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400">SKU</th>
+              <th className="px-6 py-4 text-sm font-semibold text-gray-600 dark:text-gray-400 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
             {loading ? (
               <tr><td colSpan="6" className="text-center py-8"><Loader2 className="animate-spin mx-auto text-blue-600" /></td></tr>
             ) : products.length === 0 ? (
               <tr><td colSpan="6" className="text-center py-8 text-gray-500">No products found.</td></tr>
             ) : products.map((product) => (
-              <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+              <tr key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
+                    <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-gray-700">
                       {product.images?.[0] ? (
                         <img src={`http://localhost:5000${product.images[0]}`} alt="" className="w-full h-full object-cover" />
                       ) : (
@@ -250,27 +254,27 @@ const Products = () => {
                       )}
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900">{product.name}</div>
-                      <div className="text-xs text-gray-500 line-clamp-1">{product.description}</div>
+                      <div className="font-medium text-gray-900 dark:text-white">{product.name}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{product.description}</div>
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-600">{product.category}</td>
+                <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{product.category}</td>
                 <td className="px-6 py-4">
-                  <div className="text-sm font-medium text-gray-900">${product.selling_price}</div>
+                  <div className="text-sm font-medium text-gray-900 dark:text-white">${product.selling_price}</div>
                   <div className="text-xs text-green-600 font-medium">Profit: ${product.profit}</div>
                 </td>
                 <td className="px-6 py-4">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    product.stock <= 5 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'
+                    product.stock <= 5 ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400' : 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400'
                   }`}>
                     {product.stock} in stock
                   </span>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-500 font-mono">{product.sku}</td>
+                <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 font-mono">{product.sku}</td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <button onClick={() => handleShare(product)} className="p-2 text-gray-400 hover:text-green-600 transition-colors" title="Share on WhatsApp">
+                    <button onClick={() => handleShare(product)} className="p-2 text-gray-400 hover:text-green-600 transition-colors">
                       <Share2 size={18} />
                     </button>
                     {isAdmin && (
@@ -289,6 +293,62 @@ const Products = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden grid grid-cols-1 gap-4">
+        {loading ? (
+          <div className="flex justify-center py-8"><Loader2 className="animate-spin text-blue-600" /></div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">No products found.</div>
+        ) : products.map((product) => (
+          <div key={product.id} className="bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-4">
+            <div className="flex gap-4">
+              <div className="w-20 h-20 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-gray-700 shrink-0">
+                {product.images?.[0] ? (
+                  <img src={`http://localhost:5000${product.images[0]}`} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <ImageIcon className="text-gray-400" size={24} />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-start">
+                  <h4 className="font-bold text-gray-900 dark:text-white truncate">{product.name}</h4>
+                  <span className="text-sm font-bold text-blue-600 dark:text-blue-400">${product.selling_price}</span>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{product.description}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-[10px] bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full font-medium">
+                    {product.category}
+                  </span>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                    product.stock <= 5 ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400' : 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400'
+                  }`}>
+                    {product.stock} Stock
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800">
+              <span className="text-xs text-gray-400 font-mono">{product.sku}</span>
+              <div className="flex items-center gap-2">
+                <button onClick={() => handleShare(product)} className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+                  <Share2 size={18} />
+                </button>
+                {isAdmin && (
+                  <>
+                    <button onClick={() => { setCurrentProduct(product); setFormData(product); setIsModalOpen(true); }} className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                      <Edit2 size={18} />
+                    </button>
+                    <button onClick={() => handleDelete(product.id)} className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                      <Trash2 size={18} />
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Pagination */}

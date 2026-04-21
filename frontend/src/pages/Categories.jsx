@@ -63,7 +63,7 @@ const Categories = () => {
   };
 
   const handleDeleteCategory = async (id) => {
-    if (!window.confirm('Delete this category and all its subcategories?')) return;
+    if (!window.confirm('Delete this category?')) return;
     try {
       await api.delete(`/categories/${id}`);
       fetchCategories();
@@ -73,53 +73,52 @@ const Categories = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900">Categories</h2>
-        <p className="text-gray-500">Manage your product categories and subcategories.</p>
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Categories</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Manage your product hierarchy.</p>
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-lg flex items-center gap-2">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 p-4 rounded-lg flex items-center gap-2 text-sm">
           <AlertCircle size={18} />
           {error}
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {/* Add Category Form */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
-          <h3 className="text-lg font-bold flex items-center gap-2">
-            <Plus className="text-blue-600" size={20} />
-            Add New Category
+        <div className="bg-white dark:bg-gray-900 p-4 md:p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-4">
+          <h3 className="text-md font-bold flex items-center gap-2 dark:text-white uppercase tracking-wider text-xs">
+            <Plus className="text-blue-600" size={18} />
+            New Category
           </h3>
           <form onSubmit={handleAddCategory} className="flex gap-2">
             <input
               type="text"
-              placeholder="e.g. Men, Women, Kids"
-              className="flex-1 px-4 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g. Men"
+              className="flex-1 px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 dark:text-white text-sm"
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
             />
             <button
               disabled={loading}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
+              className="bg-blue-600 text-white px-4 py-2.5 rounded-lg font-bold hover:bg-blue-700 disabled:opacity-50 transition-all active:scale-95"
             >
               {loading ? <Loader2 className="animate-spin" size={18} /> : <Plus size={18} />}
-              Add
             </button>
           </form>
         </div>
 
         {/* Add Subcategory Form */}
-        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
-          <h3 className="text-lg font-bold flex items-center gap-2">
-            <Plus className="text-blue-600" size={20} />
-            Add New Subcategory
+        <div className="bg-white dark:bg-gray-900 p-4 md:p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-4">
+          <h3 className="text-md font-bold flex items-center gap-2 dark:text-white uppercase tracking-wider text-xs">
+            <Plus className="text-blue-600" size={18} />
+            New Subcategory
           </h3>
-          <form onSubmit={handleAddSubcategory} className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <form onSubmit={handleAddSubcategory} className="flex flex-col sm:flex-row gap-2">
             <select
-              className="px-4 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 dark:text-white text-sm"
               value={newSubcategory.category_id}
               onChange={(e) => setNewSubcategory({...newSubcategory, category_id: e.target.value})}
             >
@@ -128,20 +127,19 @@ const Categories = () => {
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-1">
               <input
                 type="text"
-                placeholder="e.g. T-shirt, Kurti"
-                className="flex-1 px-4 py-2 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g. T-shirt"
+                className="flex-1 px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 dark:text-white text-sm"
                 value={newSubcategory.name}
                 onChange={(e) => setNewSubcategory({...newSubcategory, name: e.target.value})}
               />
               <button
                 disabled={loading}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
+                className="bg-blue-600 text-white px-4 py-2.5 rounded-lg font-bold hover:bg-blue-700 disabled:opacity-50 transition-all active:scale-95"
               >
                 {loading ? <Loader2 className="animate-spin" size={18} /> : <Plus size={18} />}
-                Add
               </button>
             </div>
           </form>
@@ -149,26 +147,26 @@ const Categories = () => {
       </div>
 
       {/* Category List */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-gray-100 bg-gray-50 flex items-center gap-2 font-bold">
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
+        <div className="p-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 flex items-center gap-2 font-bold dark:text-white text-sm uppercase tracking-wider">
           <FolderTree size={18} className="text-gray-400" />
-          Category Structure
+          Structure
         </div>
-        <div className="divide-y divide-gray-50">
+        <div className="divide-y divide-gray-50 dark:divide-gray-800">
           {loading && categories.length === 0 ? (
             <div className="p-8 text-center"><Loader2 className="animate-spin mx-auto text-blue-600" /></div>
           ) : categories.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">No categories found. Start by adding one above.</div>
+            <div className="p-8 text-center text-gray-500 text-sm">No categories found.</div>
           ) : categories.map((cat) => (
-            <div key={cat.id} className="p-4 hover:bg-gray-50/50 transition-colors">
+            <div key={cat.id} className="p-4 hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors">
               <div className="flex items-center justify-between group">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center font-bold">
+                  <div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center font-bold">
                     {cat.name.charAt(0)}
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900">{cat.name}</div>
-                    <div className="text-xs text-gray-500">{cat.subcategories.length} subcategories</div>
+                    <div className="font-bold text-gray-900 dark:text-white">{cat.name}</div>
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wide">{cat.subcategories.length} Items</div>
                   </div>
                 </div>
                 <button
@@ -180,13 +178,13 @@ const Categories = () => {
               </div>
               
               {cat.subcategories.length > 0 && (
-                <div className="mt-4 ml-12 flex flex-wrap gap-2">
+                <div className="mt-3 ml-13 flex flex-wrap gap-1.5">
                   {cat.subcategories.map((sub, idx) => (
                     <span 
                       key={idx}
-                      className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full flex items-center gap-1"
+                      className="px-2.5 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-[10px] font-bold rounded-full flex items-center gap-1 uppercase tracking-wide border border-gray-200 dark:border-gray-700"
                     >
-                      <Tag size={12} className="text-gray-400" />
+                      <Tag size={10} className="text-gray-400" />
                       {sub}
                     </span>
                   ))}
